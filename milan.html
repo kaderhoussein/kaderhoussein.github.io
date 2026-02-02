@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Birthday Surprise ✨💖</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: linear-gradient(135deg, #ff9ad9, #ffc0cb, #ffb6c1);
+  }
+
+  /* ACCESS FORM */
+  #access-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(255, 182, 193, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    z-index: 50;
+    text-align: center;
+  }
+
+  #access-overlay h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+
+  #access-overlay input {
+    padding: 12px;
+    margin: 8px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: none;
+    width: 220px;
+    text-align: center;
+  }
+
+  #access-overlay button {
+    padding: 12px 30px;
+    font-size: 16px;
+    margin-top: 10px;
+    border-radius: 20px;
+    border: none;
+    background: #ff69b4;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  #error-msg {
+    color: #ffe6ea;
+    margin-top: 10px;
+    display: none;
+  }
+
+  /* MAIN CARD */
+  .card {
+    display: none;
+    background: rgba(255, 182, 193, 0.9);
+    padding: 50px;
+    border-radius: 25px;
+    text-align: center;
+    max-width: 700px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+  }
+
+  h1 { font-size: 2.5em; margin-bottom: 15px; color: #fff; text-shadow: 1px 1px 5px #ffb6c1; }
+  p { font-size: 1.3em; margin: 8px 0; color: #fff; text-shadow: 1px 1px 4px #ff9ad9; }
+  .highlight { font-size: 1.7em; font-weight: bold; margin: 15px 0; color: #fff; text-shadow: 2px 2px 8px #ff69b4; }
+
+  .buttons { margin-top: 30px; position: relative; height: 80px; }
+
+  button.main-btn {
+    font-size: 1.2em;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    position: absolute;
+    transition: transform 0.05s linear, background 0.3s;
+  }
+
+  #yes {
+    background: #ff69b4;
+    color: #fff;
+    left: 35%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  #yes:hover { background: #ff85c1; }
+
+  #no {
+    background: #ff1493;
+    color: white;
+    left: 55%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  #no:hover { background: #ff33b2; }
+
+  #result { margin-top: 30px; font-size: 1.6em; display: none; color: #fff; text-shadow: 2px 2px 8px #ff69b4; }
+
+  .photo-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+    display: none;
+  }
+
+  .photo-gallery img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 3px solid #fff;
+    box-shadow: 0 8px 20px rgba(255,182,193,0.6);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .photo-gallery img:hover { transform: scale(1.1); }
+
+  #confetti-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+  }
+
+  .heart {
+    position: fixed;
+    font-size: 25px;
+    animation: floatUp 4s linear forwards;
+    pointer-events: none;
+    z-index: 15;
+    opacity: 0.9;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ACCESS FORM -->
+  <div id="access-overlay">
+    <h2>💌 Secret Surprise 💌</h2>
+    <p>Please enter your name and our special date to access</p>
+    <input type="text" id="name-input" placeholder="Your full name">
+    <input type="date" id="date-input">
+    <button id="submit-access">Enter</button>
+    <p id="error-msg">Incorrect info, try again!</p>
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="card">
+    <h1>🎉 Congratulations! 🎉</h1>
+    <p>You’ve officially won a trip to</p>
+    <div class="highlight">🇮🇹 MILAN 🇮🇹</div>
+    <p>Start packing your stuff</p>
+    <p class="highlight">We’re leaving tomorrow ✈️</p>
+
+    <p style="margin-top: 30px;">Are you coming with me? 😌</p>
+
+    <div class="buttons">
+      <button id="yes" class="main-btn">YES 💖</button>
+      <button id="no" class="main-btn">NO 🙄</button>
+    </div>
+
+    <div id="result">💃🧳 Every trip with you is crazy, like the girl in the photo below !❤️</div>
+
+    <div id="photo-gallery" class="photo-gallery">
+      <img src="photo1.jpg" alt="Sweet memory 1">
+    </div>
+  </div>
+
+  <!-- Audio -->
+  <audio id="song" src="birthday-song.mp3"></audio>
+
+  <!-- Confetti -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <script>
+    // ========== ACCESS FORM ==========
+    const correctName = "Julie Marie";  // Replace with her full name
+    const correctDate = "2024-08-22";     // Replace with your love birthday (YYYY-MM-DD)
+
+    document.getElementById("submit-access").addEventListener("click", () => {
+      const enteredName = document.getElementById("name-input").value.trim();
+      const enteredDate = document.getElementById("date-input").value;
+
+      if(enteredName === correctName && enteredDate === correctDate) {
+        document.getElementById("access-overlay").style.display = "none";
+        document.querySelector(".card").style.display = "flex";
+      } else {
+        document.getElementById("error-msg").style.display = "block";
+      }
+    });
+
+    // ========== MAIN PAGE ==========
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const result = document.getElementById("result");
+    const gallery = document.getElementById("photo-gallery");
+    const song = document.getElementById("song");
+    const confettiCanvas = document.getElementById("confetti-canvas");
+    const ctx = confettiCanvas.getContext("2d");
+
+    // NO button follows cursor
+    let noX = noBtn.offsetLeft;
+    let noY = noBtn.offsetTop;
+    document.addEventListener("mousemove", (e) => {
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      const btnRect = noBtn.getBoundingClientRect();
+      const btnCenterX = btnRect.left + btnRect.width/2;
+      const btnCenterY = btnRect.top + btnRect.height/2;
+      const distanceX = btnCenterX - mouseX;
+      const distanceY = btnCenterY - mouseY;
+      const distance = Math.sqrt(distanceX**2 + distanceY**2);
+      const dangerZone = 120;
+      if(distance < dangerZone){
+        const moveStrength = (dangerZone - distance)/dangerZone*25;
+        noX += (distanceX/distance)*moveStrength;
+        noY += (distanceY/distance)*moveStrength;
+        const maxX = window.innerWidth - btnRect.width;
+        const maxY = window.innerHeight - btnRect.height;
+        noX = Math.max(0, Math.min(noX, maxX));
+        noY = Math.max(0, Math.min(noY, maxY));
+        noBtn.style.left = noX + "px";
+        noBtn.style.top = noY + "px";
+      }
+    });
+
+    // YES click: reveal photos, play song, confetti, hearts
+    yesBtn.addEventListener("click", () => {
+      result.style.display = "block";
+      gallery.style.display = "flex";
+      yesBtn.style.display = "none";
+      noBtn.style.display = "none";
+      song.play();
+      startConfetti();
+      setInterval(createHeart, 500);
+    });
+
+    // ================= CONFETTI =================
+    const confettiCount = 150;
+    let confettiParticles = [];
+
+    function resizeCanvas(){
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function createConfetti(){
+      for(let i=0;i<confettiCount;i++){
+        confettiParticles.push({
+          x: Math.random()*confettiCanvas.width,
+          y: Math.random()*confettiCanvas.height - confettiCanvas.height,
+          r: Math.random()*6+4,
+          d: Math.random()*confettiCount,
+          color: `hsl(${Math.random()*360}, 100%, 60%)`,
+          tilt: Math.random()*10 - 10
+        });
+      }
+    }
+
+    function drawConfetti(){
+      ctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+      confettiParticles.forEach(p=>{
+        ctx.beginPath();
+        ctx.lineWidth = p.r/2;
+        ctx.strokeStyle = p.color;
+        ctx.moveTo(p.x + p.tilt + p.r/4, p.y);
+        ctx.lineTo(p.x + p.tilt, p.y + p.r);
+        ctx.stroke();
+      });
+      updateConfetti();
+    }
+
+    let angle = 0;
+    function updateConfetti(){
+      angle += 0.01;
+      confettiParticles.forEach(p=>{
+        p.y += (Math.cos(angle + p.d)+3 + p.r/2)/2;
+        p.x += Math.sin(angle);
+        if(p.y > confettiCanvas.height) p.y = -10;
+        if(p.x > confettiCanvas.width) p.x = 0;
+        if(p.x < 0) p.x = confettiCanvas.width;
+      });
+      requestAnimationFrame(drawConfetti);
+    }
+
+    function startConfetti(){
+      createConfetti();
+      drawConfetti();
+    }
+
+    // ================= HEARTS =================
+    function createHeart(){
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random()*window.innerWidth + 'px';
+      heart.style.fontSize = (20 + Math.random()*20) + 'px';
+      heart.style.color = `hsl(${Math.random()*360}, 100%, 70%)`;
+      heart.innerText = '❤️';
+      document.body.appendChild(heart);
+      setTimeout(()=>heart.remove(),4000);
+    }
+  </script>
+</body>
+</html>
